@@ -13,24 +13,32 @@ terraform {
     }
   }
   required_version = ">= 1.1.0"
+ 
+   cloud { 
+    
+    organization = "Class6-ADO" 
 
-  cloud {
-    organization = "REPLACE_ME"
-
-    workspaces {
-      name = "gh-actions-demo"
-    }
-  }
+    workspaces { 
+      name = "learn-terraform-github-actions" 
+    } 
+  } 
 }
 
 provider "aws" {
-  region = "us-west-2"
+  region = "us-east-2"
 }
 
 resource "random_pet" "sg" {}
 
 data "aws_ami" "ubuntu" {
   most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["al2023-ami-2023.*-x86_64"]
+  }
+
 
   filter {
     name   = "name"
@@ -42,7 +50,7 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical
+
 }
 
 resource "aws_instance" "web" {
